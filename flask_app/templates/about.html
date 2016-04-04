@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container instructions">
+<div class="col-md-6 col-md-offset-3">
+<div class="panel panel-default panel-transparent">
+<div class="panel-body"><p class="lead text-justify panel-transparent-text"><strong>
+
+The first version of this watch comparison prototype I built early 2016 
+while at Insight Data Science in NYC. However I keep on adding improvements 
+when interesting ideas come up that have potential to enhance this tool. 
+The goal is to compare watches by similarity using
+a color-based and a design-based schemes. For the design-based part
+I have used a convolutional neural network, therefore expect the 
+algorithm to take about 15s to generate the results (using the caffe 
+library from Berkeley running on CPU mode). As of now the prototype 
+will NOT work on any random image of a watch but was built to work on 
+a seller database. 
+For more info and example
+images to query the algorithms visit : <a href="/static/samples.zip">Sample pictures</a>
+Only jpg format supported so far. Want to know more? Fire me an email to: <a href="mailto:campanacue@gmail.com"> campanacue at gmail.com </a>
+Thanks for Watching...
+</strong></p></div></div></div>
+</div>
+
+{% endblock %}
+{% block extra_css %}
+<link href="/static/css/select2.min.css" rel="stylesheet" />
+<link href="/static/css/select2-bootstrap.min.css" rel="stylesheet" />
+{% endblock %}
+{% block extra_js %}
+<script src="/static/js/select2.min.js"></script>
+<script src="/static/js/dropzone.min.js"></script>
+<script src="/static/js/custom.js"></script>
+<script src="/static/js/circle-progress.js"></script>
+{% endblock %}

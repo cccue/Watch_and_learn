@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block content %}
+<header class="marquee">
+<div class="container-fluid" name="photo-container">
+		<form id="drop" class="dropzone previews-container" action="/similarity_search">
+			<div class="dz-message text-center">
+				<h4><font color="white"> Have a pic of a watch you like? Wondering which similar models we have in stock? </font></h4>
+			<!-- <button type="button" class="similar-button btn-default btn-lg">Watch me go!</button> -->
+			</div>
+		</form>
+
+
+</div>
+<div class="container instructions"> 
+<div class="col-md-6 col-md-offset-3">
+<div class="panel panel-default panel-transparent">
+<div class="panel-body"><p class="lead text-justify panel-transparent-text"><strong>Drag image into box above for similarity query</strong> <small> <a href="/about">(here for more info)</a> </small> </p></div></div></div>
+</div>
+</header>
+{% endblock %}
+{% block extra_css %}
+<link href="/static/css/select2.min.css" rel="stylesheet" />
+<link href="/static/css/select2-bootstrap.min.css" rel="stylesheet" />
+{% endblock %}
+{% block extra_js %}
+<script src="/static/js/select2.min.js"></script>
+<script src="/static/js/dropzone.min.js"></script>
+<script src="/static/js/custom.js"></script>
+<script src="/static/js/circle-progress.js"></script>
+{% endblock %}

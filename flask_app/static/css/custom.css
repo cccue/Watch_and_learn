@@ -1,0 +1,46 @@
+.full {
+    background: url('/static/time_edges.jpg') no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    background-size: cover;
+    -o-background-size: cover;
+}
+
+/* .dropzone { border: 5px solid #FFF; border-radius: 40px; width: 300px; min-height: 300px; margin: 20px auto; background-color: white} */ 
+.dropzone { border: 5px solid #FFF; border-radius: 40px; width: 300px; min-height: 300px; margin: 20px auto}
+.dz-drag-hover { border: 5px solid #ccc; }
+.dz-message { width:290px; min-height: 290px; display: flex; align-items: center; flex-direction: column; justify-content: space-around;}
+.dz-preview { width:290px; min-height: 290px; display: flex; align-items: center; flex-direction: column; justify-content: space-around;}
+.dz-progress { width:290px; min-height: 290px; z-index: 3; display: block; float:center; top:100px; position: absolute; display: flex; align-items: center; flex-direction: column; justify-content: center;}
+
+.tag-form { display: flex; align-items: center; flex-direction: row; justify-content: center; width: 800px; } 
+.select2-selection__rendered { background-color: #ffffff; height: 36px; width: 800px; background-color: rgba(0,0,0,0.2); }
+.select2-search__field { color: rgb(255,255,255); }
+
+.carousel-container { display: flex; align-items: center; flex-direction: row; justify-content: center; width: 360px; }
+.carousel {
+}
+/* Declare heights because of positioning of img element */
+.carousel .item {
+  height: 100%;
+/* background-color: #777; */
+}
+.carousel-inner > .item > img {
+/*
+  position: absolute;
+  top: 0;
+  min-width: 400px;
+  height: 400px;
+*/
+}
+
+.panel-transparent { background-color: rgba(0,0,0,0.2); }
+.panel-transparent-text { color: rgba(255,255,255,1); }
+
+.slideshow {
+    position: absolute;
+    margin: auto
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, 0%);
+}

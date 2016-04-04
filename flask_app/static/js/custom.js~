@@ -1,0 +1,199 @@
+$(function() { Dropzone.options.drop = {
+  paramName: "file", 
+  maxFilesize: 4, // MB
+  uploadMultiple: false,
+  addRemoveLinks: false,
+  acceptedFiles: ".jpg,.png",
+  previewTemplate: "<div class=\"dz-preview dz-file-preview\">\n <div class=\"dz-progress\"></div> <img data-dz-thumbnail class=\"dz-image\"/></div>\n </div>\">",
+  init: function() {
+    this.on("success", function(file, responseText) {
+      $('.dz-progress').circleProgress('value', 1.0);
+       process_image($.parseJSON(responseText));
+      $(".dz-progress").remove();
+    });
+    this.on("addedfile", function(file) { 
+      added_file();
+    });
+    this.on("uploadprogress", function(file,progress,bytesSent) {
+      if ( progress > 5 ) {
+        $('.dz-progress').circleProgress('value', Math.min(0.95, progress/100.));
+    }
+    });
+    this.on("sending", function(file) {
+        $(".dz-progress").circleProgress({
+            value: 0.05,
+            size: 60,
+            fill: {
+              gradient: ["blue", "white"]
+            }
+        }).on('circle-animation-progress', function(event, progress) {
+            if ( progress > 0.5 ) {
+                $(this).find('strong').html('<i>Classifying</i>');
+            }
+        });
+    });
+  },
+  resize: function(file) {
+    var scale = 260./Math.max(file.width, file.height)
+    var resizeInfo = {
+          srcX: 0,
+          srcY: 0,
+          trgX: 0,
+          trgY: 0,
+          srcWidth: file.width,
+          srcHeight: file.height,
+          trgWidth: scale*file.width,
+          trgHeight: scale*file.height 
+    };
+
+    return resizeInfo;
+  }
+}});
+
+
+var globalresponse;
+var calledonce_sim = 0;
+var calledonce_rand = 0;
+function process_image(response) {
+    globalresponse = response;
+    var tag_html = "<div class=\"container-fluid tag-form\">";
+    tag_html += "<div class=\"input-group input-group select2-bootstrap-append\">"
+    tag_html += "<span class=\"input-group-btn\"><button class=\"btn btn-default\" type=\"button\" onclick=\"show_sim_images();\">Find similar watches (color based)</button></span></div>\n";
+    tag_html += "</div> <br>";
+
+    tagElement = document.createElement("div");
+    tagElement.classList.add("row");
+    tagElement.classList.add("results");
+    tagElement.innerHTML = tag_html;
+    document.body.appendChild(tagElement);
+
+    var tag_html = "<div class=\"container-fluid tag-form\">";
+    tag_html += "<div class=\"input-group input-group select2-bootstrap-append\">"
+    tag_html += "<span class=\"input-group-btn\"><button class=\"btn btn-default\" type=\"button\" onclick=\"show_rand_images();\">Find random watches</button></span></div>\n";
+    tag_html += "</div>";
+
+    tagElement = document.createElement("div");
+    tagElement.classList.add("row");
+    tagElement.classList.add("results");
+    tagElement.innerHTML = tag_html;
+    document.body.appendChild(tagElement);
+
+    $("#tags").select2({
+      theme: "bootstrap",
+      tags: true,
+      tokenSeparators: [',']
+    });
+
+    $(".dz-progress").remove();
+}
+
+
+function show_sim_images() {
+            
+	    var images = globalresponse.sim_image_color_urls;
+            var tag_html = "<br> <br> <div class=\"container-fluid carousel-container\"><div id=\"carouselsim\" class=\"carousel slide\" data-ride=\"carousel\"><ol class=\"carousel-indicators\">\n";
+            for (var i = 0; i < images.length; i++) {
+                tag_html += "<li data-target=\"#carouselsim\" data-slide-to=\"" + i + "\"></li>\n";
+            }
+            tag_html += "</ol><div class=\"carousel-inner\" role=\"listbox\">\n";
+            for (var i = 0; i < images.length; i++) {
+                tag_html += "<div class=\"item" + ((i==0) ? " active" : "") + "\"><img src=\"static/"+images[i]+"\"></div>\n";
+            }
+
+            tag_html += "<a class=\"left carousel-control\" href=\"#carouselsim\" role=\"button\" data-slide=\"prev\">\n";
+            tag_html += "  <span class=\"glyphicon glyphicon-chevron-left\" aria-hidden=\"true\"></span>\n";
+            tag_html += "  <span class=\"sr-only\">Previous</span>\n";
+            tag_html += "</a>\n";
+            tag_html += "<a class=\"right carousel-control\" href=\"#carouselsim\" role=\"button\" data-slide=\"next\">\n";
+            tag_html += "  <span class=\"glyphicon glyphicon-chevron-right\" aria-hidden=\"true\"></span>\n";
+            tag_html += "  <span class=\"sr-only\">Next</span>\n";
+            tag_html += "</a>\n";
+            tag_html += "</div></div>\n";
+
+            tagElement = document.createElement("div");
+            tagElement.classList.add("row");
+            tagElement.classList.add("searchresults");
+            tagElement.innerHTML = tag_html;
+            if(calledonce_sim == 0 ){
+	    document.body.appendChild(tagElement);}
+	    calledonce_sim = 1;
+//      }
+//);
+}
+
+function show_rand_images() {
+            
+	    var images = globalresponse.rand_image_urls;
+            var tag_html = "<br> <br> <div class=\"container-fluid carousel-container\"><div id=\"carousel\" class=\"carousel slide\" data-ride=\"carousel\"><ol class=\"carousel-indicators\">\n";
+            for (var i = 0; i < images.length; i++) {
+                tag_html += "<li data-target=\"#carousel\" data-slide-to=\"" + i + "\"></li>\n";
+            }
+            tag_html += "</ol><div class=\"carousel-inner\" role=\"listbox\">\n";
+            for (var i = 0; i < images.length; i++) {
+                tag_html += "<div class=\"item" + ((i==0) ? " active" : "") + "\"><img src=\"static/"+images[i]+"\"></div>\n";
+            }
+
+            tag_html += "<a class=\"left carousel-control\" href=\"#carousel\" role=\"button\" data-slide=\"prev\">\n";
+            tag_html += "  <span class=\"glyphicon glyphicon-chevron-left\" aria-hidden=\"true\"></span>\n";
+            tag_html += "  <span class=\"sr-only\">Previous</span>\n";
+            tag_html += "</a>\n";
+            tag_html += "<a class=\"right carousel-control\" href=\"#carousel\" role=\"button\" data-slide=\"next\">\n";
+            tag_html += "  <span class=\"glyphicon glyphicon-chevron-right\" aria-hidden=\"true\"></span>\n";
+            tag_html += "  <span class=\"sr-only\">Next</span>\n";
+            tag_html += "</a>\n";
+            tag_html += "</div></div>\n";
+
+            tagElement = document.createElement("div");
+            tagElement.classList.add("row");
+            tagElement.classList.add("searchresults");
+            tagElement.innerHTML = tag_html;
+            if(calledonce_rand == 0 ){
+	    document.body.appendChild(tagElement);}
+	    calledonce_rand = 1;
+//      }
+//);
+}
+
+
+
+function recommend_images(response) {
+
+    var tag_html = "<div class=\"container-fluid tag-form\">";
+    tag_html += "<div class=\"input-group input-group select2-bootstrap-append\">"
+    tag_html += "<span class=\"input-group-btn\"><button class=\"btn btn-default\" type=\"button\" onclick=\"show_images();\">Find similar images</button></span></div>\n";
+    tag_html += "</div>";
+
+    tagElement = document.createElement("div");
+    tagElement.classList.add("row");
+    tagElement.classList.add("results");
+    tagElement.innerHTML = tag_html;
+    document.body.appendChild(tagElement);
+
+    $("#tags").select2({
+      theme: "bootstrap",
+      tags: true,
+      tokenSeparators: [',']
+    });
+
+    $(".dz-progress").remove();
+
+}
+
+function added_file() {
+    $(".dz-message").detach();
+    $(".instructions").remove();
+    $(".dz-preview").slice(0,-1).remove();
+    $(".results").remove();
+    $(".searchresults").remove();
+}
+
+$(document).bind("dragover", function(e) {
+            e.preventDefault();
+            return false;
+       });
+
+$(document).bind("drop", function(e){
+            e.preventDefault();
+            return false;
+        });
+
