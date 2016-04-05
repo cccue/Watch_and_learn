@@ -3,6 +3,7 @@ from scipy import ndimage as ndi
 from skimage.measure import moments
 from skimage import transform, filters
 
+# Rotational transform on image
 def transform_rot(image):
     
     # Need black background (0 boundary condition) 
@@ -62,6 +63,7 @@ def transform_rot(image):
 
     return image_rot
 
+# Translational transform on image
 def transform_trans(image):
 
     # Ascertaining translational shift from FFT transform    
@@ -82,7 +84,7 @@ def transform_trans(image):
 
     return image_trans
 
-
+# Invariant transform (rot/trans) on image
 def set_invariant_rep(image):
     
     dims = image.shape

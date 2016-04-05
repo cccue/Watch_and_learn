@@ -20,7 +20,7 @@ def get_cnn_objects():
 
     return net, transformer
 
-# Color quantization signature 
+# Color quantization signature based on clustering  
 def call_color_sig(path_to_image):
 
     size = 360
@@ -73,7 +73,7 @@ def reduce_colors(image,r_flag):
     elif(r_flag == 1):
       # This is a 64 color scheme very similar to the one in pyccv
       num_colors = 64
-    elif(r_flag == 1):
+    elif(r_flag == 2):
       # This is a 216 color Web safe palette 
       num_colors = 216
 
@@ -151,7 +151,7 @@ def call_pyccv_mine(path_to_image):
     return ccv
 
 # Outputing list of first K-similar images as defined
-# by the CCV feature space
+# by the feature space
 def predict_similar_images(image_input):
 
     root_path = 'flask_app/'
@@ -188,15 +188,17 @@ def predict_similar_images(image_input):
       	  algo_name = 'brute'
       	  metric_name = None 
 
+        # To work with reduced feature space
         if((pca_flag == 'PCA') and (case == 'CNN')):
           pca_file_name = \
-          root_path + objects_root + case + '/PCA_obj_' + str(ncomponents) + '.pkl'
+          root_path + objects_root + case + \
+          '/PCA_obj_' + str(ncomponents) + '.pkl'
           pca_trans = joblib.load(pca_file_name)
           ref_feature_vec = pca_trans.transform(ref_feature_vec)
 
     	knn_file_name = root_path + objects_root + case + '/knn_object.pkl'
     	if(os.path.exists(knn_file_name)):
-      	  print "Loading pickle file"
+      	  print "Loading knn object"
      	  knn_object = joblib.load(knn_file_name)    
     	else:
       	  # Retrieving feature matrix from csv file

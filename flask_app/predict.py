@@ -69,7 +69,7 @@ def metric_hist_inter(vec1,vec2):
 
     return distance
 
-# Building the knn Object to speed up CCV similarity searches
+# Building the knn object to speed up similarity searches
 def build_knn(feature_matrix,file_name,algo_name,metric_name):
 
    if(metric_name == None): metric_name = metric_emd_sig
