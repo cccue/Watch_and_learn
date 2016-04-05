@@ -99,7 +99,7 @@ def reduce_colors(image,r_flag):
 def call_pyccv_mine(path_to_image):
 
     # Normalization (This is the size of most
-    # images obatined from Jomashop
+    # images scraped)
     size = 360
     # Size thresholding as needed by the CCV algorithm
     threshold = 3000
